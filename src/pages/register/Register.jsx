@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import "../login/Login.css";
+import { Link } from "react-router-dom";
+import BASE_URL from "../../services/api";
 
 const Register = () => {
-  const navigate = useNavigate();
-
   const [successMessage, setSuccessMessage] = useState("");
 
   const [formData, setFormData] = useState({
@@ -34,9 +32,10 @@ const Register = () => {
 
     try {
       setLoading(true);
+      setSuccessMessage("");
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/v1/auth/register",
+        `${BASE_URL}/api/v1/auth/register`,
         {
           method: "POST",
           headers: {
@@ -72,142 +71,286 @@ const Register = () => {
       }
     } catch (error) {
       console.error(error);
-      setSuccessMessage("Unable to connect to server");
+      setSuccessMessage(
+        "Unable to connect to server"
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="form-section">
-        <div className="login-card">
-          <h2>Registration</h2>
+    <div
+      className="container-fluid min-vh-100"
+      style={{
+        background:
+          "linear-gradient(135deg, #000000, #06120a, #000000)",
+      }}
+    >
+      <div className="row min-vh-100">
 
-          {successMessage && (
-            <h4
+        {/* LEFT SIDE - REGISTRATION FORM */}
+
+        <div className="col-lg-6 d-flex align-items-center justify-content-center py-5">
+
+          <div
+            className="card text-white border-0"
+            style={{
+              width: "550px",
+              background: "rgba(255,255,255,0.05)",
+              backdropFilter: "blur(25px)",
+              WebkitBackdropFilter: "blur(25px)",
+              boxShadow:
+                "0 10px 30px rgba(0,0,0,0.3)",
+              border:
+                "1px solid rgba(34,197,94,0.2)",
+            }}
+          >
+            <div className="card-body p-4">
+
+              <h2
+                className="text-center mb-4"
+                style={{
+                  color: "#22c55e",
+                }}
+              >
+                Registration
+              </h2>
+
+              {successMessage && (
+                <h4
+                  className="text-center mb-4"
+                  style={{
+                    color: "#22c55e",
+                  }}
+                >
+                  {successMessage}
+                </h4>
+              )}
+
+              <form onSubmit={handleRegister}>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Name
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Date Of Birth
+                  </label>
+
+                  <input
+                    type="date"
+                    className="form-control"
+                    name="dob"
+                    value={formData.dob}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Aadhar Number
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="aadhar"
+                    value={formData.aadhar}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    PAN Number
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="pan"
+                    value={formData.pan}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Phone Number
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="phone_no"
+                    value={formData.phone_no}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Relative Name
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="relative_name"
+                    value={formData.relative_name}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Relative Phone
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="relative_phone"
+                    value={formData.relative_phone}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Relationship
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="relative_relation"
+                    value={formData.relative_relation}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Password
+                  </label>
+
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn w-100 fw-bold"
+                  style={{
+                    background: "#22c55e",
+                    color: "#000",
+                    border: "none",
+                  }}
+                >
+                  {loading
+                    ? "Registering..."
+                    : "Register"}
+                </button>
+
+                <div className="text-center mt-3">
+                  <Link
+                    to="/"
+                    className="text-success text-decoration-none"
+                  >
+                    Already have an account? Login
+                  </Link>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+
+        {/* RIGHT SIDE - BRANDING */}
+
+        <div className="col-lg-6 d-flex align-items-center justify-content-center">
+
+          <div className="text-white p-5">
+
+            <h1
+              className="display-3 fw-bold"
               style={{
                 color: "#22c55e",
-                marginBottom: "20px",
-                textAlign: "center",
               }}
             >
-              {successMessage}
-            </h4>
-          )}
+              Loan Management
+            </h1>
 
-          <form onSubmit={handleRegister}>
-            <div className="input-group">
-              <label>Name</label>
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
+            <p className="lead mt-4">
+              Manage customers, loans, collections and
+              analytics from a centralized platform.
+            </p>
 
-            <div className="input-group">
-              <label>Date Of Birth</label>
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-              />
-            </div>
+            <div className="mt-5">
 
-            <div className="input-group">
-              <label>Aadhar</label>
-              <input
-                name="aadhar"
-                value={formData.aadhar}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>PAN</label>
-              <input
-                name="pan"
-                value={formData.pan}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Phone Number</label>
-              <input
-                name="phone_no"
-                value={formData.phone_no}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Relative Name</label>
-              <input
-                name="relative_name"
-                value={formData.relative_name}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Relative Phone</label>
-              <input
-                name="relative_phone"
-                value={formData.relative_phone}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Relationship</label>
-              <input
-                name="relative_relation"
-                value={formData.relative_relation}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label>Role</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
+              <div
+                className="ps-3 py-3 mb-3 rounded"
+                style={{
+                  borderLeft:
+                    "4px solid #22c55e",
+                  background:
+                    "rgba(255,255,255,0.03)",
+                }}
               >
-                <option value="customer">Customer</option>
-                <option value="admin">Admin</option>
-              </select>
+                Customer Management
+              </div>
+
+              <div
+                className="ps-3 py-3 mb-3 rounded"
+                style={{
+                  borderLeft:
+                    "4px solid #22c55e",
+                  background:
+                    "rgba(255,255,255,0.03)",
+                }}
+              >
+                Loan Tracking
+              </div>
+
+              <div
+                className="ps-3 py-3 rounded"
+                style={{
+                  borderLeft:
+                    "4px solid #22c55e",
+                  background:
+                    "rgba(255,255,255,0.03)",
+                }}
+              >
+                Real-time Reports
+              </div>
+
             </div>
 
-            <div className="input-group">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </div>
+          </div>
 
-            <button type="submit" disabled={loading}>
-              {loading ? "Registering..." : "Register"}
-            </button>
-
-            <div
-              style={{
-                marginTop: "20px",
-                textAlign: "center",
-              }}
-            >
-              <Link to="/">
-                Already have an account? Login
-              </Link>
-            </div>
-          </form>
         </div>
+
       </div>
     </div>
   );
