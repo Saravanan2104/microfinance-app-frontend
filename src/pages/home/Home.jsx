@@ -12,7 +12,7 @@ import StaffTab from "../../branch/StaffTab";
 import ProfileTab from "../../branch/ProfileTab";
 import SettingsTab from "../../branch/SettingsTab";
 import QCTab from "../../branch/QCTab";
-import { getMembers, getGroups } from "../../services/api";
+import { getMembers, getGroups, getEmployees } from "../../services/api";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -69,18 +69,31 @@ const Home = () => {
     targetCollection: 95,
   });
 
+  const normaliseStaff = (s) => ({
+    id: String(s.employee_id),
+    name: `${s.first_name || ""} ${s.last_name || ""}`.trim(),
+    role: s.role_name || "Unknown",
+    email: s.email || "",
+    phone: s.phone || "",
+    assignedGroups: 0,
+    collectionTarget: 95,
+    collectionRate: 100
+  });
+
   // Fetch members and groups from real API
   useEffect(() => {
     const loadData = async () => {
       setApiLoading(true);
       setApiError("");
       try {
-        const [membersData, groupsData] = await Promise.all([
+        const [membersData, groupsData, staffData] = await Promise.all([
           getMembers(),
           getGroups(),
+          getEmployees(),
         ]);
         setMembers((membersData || []).map(normaliseMember));
         setGroups((groupsData || []).map(normaliseGroup));
+        setStaff((staffData || []).map(normaliseStaff));
       } catch (err) {
         console.error("API error:", err);
         setApiError(err.message || "Failed to load data from server");
@@ -118,11 +131,7 @@ const Home = () => {
     { id: 4, type: "success", message: "KYC verification credentials approved successfully for Rajeshwari S.", time: "1 day ago", category: "KYC" }
   ]);
 
-  const [staff, setStaff] = useState([
-    { id: "STF001", name: "Ramesh Kumar", role: "Field Officer", assignedGroups: 2, collectionTarget: 95, collectionRate: 97.2 },
-    { id: "STF002", name: "Suresh Singh", role: "Field Officer", assignedGroups: 1, collectionTarget: 95, collectionRate: 94.8 },
-    { id: "STF003", name: "Pooja Hegde", role: "Senior Field Officer", assignedGroups: 1, collectionTarget: 98, collectionRate: 98.9 }
-  ]);
+  const [staff, setStaff] = useState([]);
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
@@ -228,26 +237,26 @@ const Home = () => {
     <div 
       className="min-vh-100 d-flex flex-column"
       style={{
-        background: "linear-gradient(135deg, #000000, #041005, #000000)",
+        background: "#f4f7f6", // Light gray background
         fontFamily: "'Outfit', 'Inter', sans-serif",
         overflowX: "hidden"
       }}
     >
       {/* Top Navbar */}
       <nav 
-        className="navbar navbar-expand-lg navbar-dark px-4 py-3 border-bottom border-secondary sticky-top"
+        className="navbar navbar-expand-lg px-4 py-3 border-bottom sticky-top"
         style={{
-          background: "rgba(0, 0, 0, 0.75)",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid rgba(57, 255, 20, 0.15) !important"
+          background: "#ffffff",
+          borderBottom: "1px solid #e0e0e0 !important",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.02)"
         }}
       >
         <div className="container-fluid p-0 d-flex justify-content-between align-items-center">
           
           <div className="d-flex align-items-center gap-3">
-            {/* Hamburger Button (collapsible 3-bar menu) */}
+            {/* Hamburger Button */}
             <button 
-              className="btn btn-outline-success border-0 text-white fs-4 p-0 d-flex align-items-center justify-content-center"
+              className="btn btn-outline-success border-0 text-success fs-4 p-0 d-flex align-items-center justify-content-center"
               onClick={toggleSidebar}
               style={{ width: "36px", height: "36px" }}
               aria-label="Toggle Sidebar"
@@ -255,21 +264,26 @@ const Home = () => {
               ☰
             </button>
             <div className="d-flex align-items-center gap-2">
-              <span className="fs-3">👥</span>
-              <span 
-                className="fw-bold tracking-wider text-white" 
-                style={{ 
-                  fontSize: "20px",
-                  textShadow: "0 0 8px rgba(57, 255, 20, 0.4)"
-                }}
-              >
-                Micro Finance
-              </span>
+              <span className="fs-3 text-success">👥</span>
+              <div className="d-flex flex-column">
+                <span 
+                  className="fw-bold tracking-wider text-success" 
+                  style={{ fontSize: "10px", letterSpacing: "1px", textTransform: "uppercase" }}
+                >
+                  Admin Console
+                </span>
+                <span 
+                  className="fw-bold text-dark" 
+                  style={{ fontSize: "20px" }}
+                >
+                  Microfinance Controls
+                </span>
+              </div>
             </div>
           </div>
 
           <div className="d-flex align-items-center gap-3">
-            <span className="text-secondary small d-none d-md-inline-block">
+            <span className="text-secondary small d-none d-md-inline-block fw-medium">
               📅 {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
             <div 
@@ -294,15 +308,16 @@ const Home = () => {
         
         {/* Responsive Collapsible Sidebar */}
         <aside 
-          className="py-4 px-3 d-flex flex-column justify-content-between shrink-0 border-end border-secondary"
+          className="py-4 px-3 d-flex flex-column justify-content-between shrink-0 border-end"
           style={{
             width: sidebarExpanded ? "260px" : "80px",
-            background: "rgba(0, 0, 0, 0.8)",
-            borderRight: "1px solid rgba(57, 255, 20, 0.1) !important",
+            background: "#ffffff",
+            borderRight: "1px solid #e0e0e0 !important",
             transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
             zIndex: 100,
             overflowY: "auto",
-            maxHeight: "calc(100vh - 73px)"
+            maxHeight: "calc(100vh - 73px)",
+            boxShadow: "2px 0 5px rgba(0,0,0,0.02)"
           }}
         >
           {/* Menu Items */}
@@ -313,13 +328,12 @@ const Home = () => {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className="btn w-100 text-start d-flex align-items-center gap-3 py-3 px-3 rounded border-0"
+                  className="btn w-100 text-start d-flex align-items-center gap-3 py-3 px-3 rounded border-0 mb-1"
                   style={{
-                    background: isActive ? "rgba(57, 255, 20, 0.15)" : "transparent",
-                    color: isActive ? "#39FF14" : "#b0b0b0",
-                    borderLeft: isActive ? "4px solid #39FF14" : "4px solid transparent",
+                    background: isActive ? "#28a745" : "transparent", // Solid green for active
+                    color: isActive ? "#ffffff" : "#4a4a4a", // White text if active, dark gray if not
                     transition: "all 0.2s",
-                    textShadow: isActive ? "0 0 5px rgba(57, 255, 20, 0.3)" : "none"
+                    fontWeight: isActive ? "600" : "500"
                   }}
                 >
                   <span className="fs-5">{item.icon}</span>
@@ -330,21 +344,21 @@ const Home = () => {
           </div>
 
           {/* Profile Card & Logout Section */}
-          <div className="mt-5 pt-4 border-top border-secondary">
+          <div className="mt-5 pt-4 border-top">
             {/* Branch Manager Card */}
             {sidebarExpanded ? (
               <div 
                 className="p-3 mb-3 rounded d-flex align-items-center gap-3"
-                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}
+                style={{ background: "#f8f9fa", border: "1px solid #e0e0e0" }}
               >
                 <div 
-                  className="rounded-circle bg-dark border border-success d-flex align-items-center justify-content-center"
+                  className="rounded-circle bg-white border border-success d-flex align-items-center justify-content-center shadow-sm"
                   style={{ width: "40px", height: "40px" }}
                 >
                   👩💼
                 </div>
                 <div>
-                  <strong className="text-white d-block" style={{ fontSize: "14px" }}>Priya Sharma</strong>
+                  <strong className="text-dark d-block" style={{ fontSize: "14px" }}>Priya Sharma</strong>
                   <span className="text-secondary small d-block" style={{ fontSize: "11px" }}>Branch Manager</span>
                 </div>
               </div>
@@ -378,12 +392,6 @@ const Home = () => {
               <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
                 <div className="spinner-border text-success mb-3" role="status" style={{ width: "3rem", height: "3rem" }}></div>
                 <p className="text-secondary">Loading data from server…</p>
-              </div>
-            ) : apiError ? (
-              <div className="alert alert-danger d-flex align-items-center gap-2">
-                <span>⚠️</span>
-                <span>{apiError} — showing cached data if available.</span>
-                <button className="btn btn-sm btn-outline-danger ms-auto" onClick={() => window.location.reload()}>Retry</button>
               </div>
             ) : null}
             {!apiLoading && renderContentTab()}

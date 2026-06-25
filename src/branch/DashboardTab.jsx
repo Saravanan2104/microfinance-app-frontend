@@ -134,11 +134,11 @@ const DashboardTab = ({
   ];
 
   return (
-    <div className="container-fluid py-4 text-white">
+    <div className="container-fluid py-4 text-dark">
       {/* Page Title */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 className="fw-bold mb-1" style={{ color: "#39FF14", textShadow: "0 0 10px rgba(57, 255, 20, 0.3)" }}>
+          <h1 className="fw-bold mb-1 text-success" style={{ fontSize: "32px" }}>
             Branch Dashboard
           </h1>
           <p className="text-secondary mb-0">Overview & Management Portal — Branch Code: BR041</p>
@@ -151,37 +151,37 @@ const DashboardTab = ({
       {/* Main KPI Cards Grid */}
       <div className="row g-4 mb-4">
         <div className="col-md-3 col-sm-6">
-          <div className="card h-100 border-0 text-white card-zoom-out" style={{ background: "rgba(255,255,255,0.04)", borderRight: "3px solid #39FF14", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
+          <div className="card h-100 border-0 shadow-sm rounded-4 bg-white card-zoom-out">
             <div className="card-body">
               <span className="text-secondary small fw-bold uppercase">Total Groups</span>
-              <h2 className="display-6 fw-bold mt-2 mb-0 text-white">{totalGroups}</h2>
+              <h2 className="display-6 fw-bold mt-2 mb-0 text-dark">{totalGroups}</h2>
               <small className="text-success">↑ Active Women Groups</small>
             </div>
           </div>
         </div>
         <div className="col-md-3 col-sm-6">
-          <div className="card h-100 border-0 text-white card-zoom-out" style={{ background: "rgba(255,255,255,0.04)", borderRight: "3px solid #39FF14", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
+          <div className="card h-100 border-0 shadow-sm rounded-4 bg-white card-zoom-out">
             <div className="card-body">
               <span className="text-secondary small fw-bold uppercase">Total Members</span>
-              <h2 className="display-6 fw-bold mt-2 mb-0 text-white">{totalMembers}</h2>
+              <h2 className="display-6 fw-bold mt-2 mb-0 text-dark">{totalMembers}</h2>
               <small className="text-success">↑ Active accounts</small>
             </div>
           </div>
         </div>
         <div className="col-md-3 col-sm-6">
-          <div className="card h-100 border-0 text-white card-zoom-out" style={{ background: "rgba(255,255,255,0.04)", borderRight: "3px solid #39FF14", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
+          <div className="card h-100 border-0 shadow-sm rounded-4 bg-white card-zoom-out">
             <div className="card-body">
               <span className="text-secondary small fw-bold uppercase">Active Borrowers</span>
-              <h2 className="display-6 fw-bold mt-2 mb-0 text-white">{activeLoansCount}</h2>
+              <h2 className="display-6 fw-bold mt-2 mb-0 text-dark">{activeLoansCount}</h2>
               <small className="text-info">{pendingLoansCount} Applications Pending</small>
             </div>
           </div>
         </div>
         <div className="col-md-3 col-sm-6">
-          <div className="card h-100 border-0 text-white card-zoom-out" style={{ background: "rgba(255,255,255,0.04)", borderRight: "3px solid #39FF14", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>
+          <div className="card h-100 border-0 shadow-sm rounded-4 bg-white card-zoom-out">
             <div className="card-body">
               <span className="text-secondary small fw-bold uppercase">Outstanding Portfolio</span>
-              <h2 className="display-6 fw-bold mt-2 mb-0" style={{ color: "#39FF14" }}>${totalPortfolio.toLocaleString()}</h2>
+              <h2 className="display-6 fw-bold mt-2 mb-0 text-success">${totalPortfolio.toLocaleString()}</h2>
               <small className="text-success">Good repayment health</small>
             </div>
           </div>

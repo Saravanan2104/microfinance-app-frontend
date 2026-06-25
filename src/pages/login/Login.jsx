@@ -18,14 +18,14 @@ const Login = () => {
       setErrorMessage("");
 
       const response = await fetch(
-        `${BASE_URL}/auth/member-login`,
+        `${BASE_URL}/auth/login`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            member_code: memberCode,
+            username: memberCode,
             password: password,
           }),
         }
@@ -163,13 +163,13 @@ const Login = () => {
 
                 <div className="mb-3">
                   <label className="form-label">
-                    Member Code
+                    Employee Code / Username
                   </label>
 
                   <input
                     type="text"
                     className="form-control bg-dark text-white border-success"
-                    placeholder="MBR000001"
+                    placeholder="bm001"
                     value={memberCode}
                     onChange={(e) =>
                       setMemberCode(e.target.value)
