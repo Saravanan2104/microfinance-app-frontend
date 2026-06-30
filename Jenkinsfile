@@ -1,12 +1,7 @@
 pipeline {
   agent any
 
-  stages {
-    stage("pull"){
-      steps {
-          git branch: 'main', credentialsId: 'token', url: 'https://github.com/Saravanan2104/microfinance-app-frontend.git'
-      }
-    }
+  stages {    
     stage("install"){
       steps {
         sh 'npm install'
