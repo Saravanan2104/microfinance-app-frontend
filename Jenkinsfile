@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage("pull"){
       steps {
-        git branch: 'main', credentialsId: 'github ', url: 'https://github.com/Saravanan2104/microfinance-app-frontend.git'
+          git branch: 'main', credentialsId: 'token', url: 'https://github.com/Saravanan2104/microfinance-app-frontend.git'
       }
     }
     stage("install"){
