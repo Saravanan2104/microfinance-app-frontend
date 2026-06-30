@@ -281,7 +281,7 @@ export default function Login({ onLogin }) {
         <div className="mf-eyebrow">
           MICROFINANCE CONTROLS <span className="dim">/ SIGN IN</span>
         </div>
-        <h1 className="mf-title">welcome poiuyuttr.</h1>
+        <h1 className="mf-title">welcome back</h1>
         <p className="mf-subtitle">
           Enter your credentials to access the loan review and
           verification desk.
