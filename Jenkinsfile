@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage("pull"){
       steps {
-        checkout scm
+        git branch: 'main', credentialsId: 'github ', url: 'https://github.com/Saravanan2104/microfinance-app-frontend.git'
       }
     }
     stage("install"){
