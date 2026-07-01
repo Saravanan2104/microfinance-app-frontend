@@ -1,0 +1,42 @@
+name: Deploy Microfinance Frontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Hostinger VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            echo "===== Moving to Project Directory ====="
+            cd /opt/microfinance-app-frontend
+
+            echo "===== Pulling Latest Code ====="
+            git pull origin main
+
+            echo "===== Installing Dependencies ====="
+            npm install
+
+            echo "===== Building React App ====="
+            npm run build
+
+            echo "===== Removing Old Nginx Files ====="
+            sudo rm -rf /usr/share/nginx/html/*
+
+            echo "===== Copying New Build ====="
+            sudo cp -r dist/* /usr/share/nginx/html/
+
+            echo "===== Reloading Nginx ====="
+            sudo systemctl reload nginx
+
+            echo "===== Deployment Completed Successfully ====="
