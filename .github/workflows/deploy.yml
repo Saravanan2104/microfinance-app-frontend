@@ -19,6 +19,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             echo "===== Moving to Project Directory ====="
+            set -e
             cd /opt/microfinance-app-frontend
 
             echo "===== Pulling Latest Code ====="
